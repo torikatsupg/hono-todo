@@ -1,9 +1,9 @@
 import postgres from 'postgres'
 
 const sql = postgres({
-  host: 'localhost',
+  host: 'db',
   port: 5432,
-  database: 'api.todo',
+  database: 'todo',
   username: 'postgres',
   password: 'password',
 })
