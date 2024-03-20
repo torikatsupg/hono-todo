@@ -1,9 +1,17 @@
-import { Hono } from "hono";
+import { Hono } from 'hono'
+import { logger } from 'hono/logger'
+import type { App } from './type'
+import { withCatchAllErrors, withTransaction } from './presentation/middlewares'
+import { setupTodoHandler } from './presentation/todo_handlers/todo_handler'
 
-const app = new Hono();
+const app: App = new Hono()
 
-app.get("/", (c) => {
-	return c.text("Hello Hono!");
-});
+// middlewares
+app.use(logger())
+app.use(withCatchAllErrors)
+app.use(withTransaction)
 
-export default app;
+// handlers
+setupTodoHandler(app)
+
+export default app

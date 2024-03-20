@@ -1,15 +1,32 @@
 version: '3.7'
 
 services:
-  db:
+  app:
+    container_name: app
     build:
-      context: ./docker/db
-      dockerfile: Dockerfile
+      dockerfile: ./docker/app/Dockerfile
+    ports:
+      - 3000:3000
+    volumes:
+      - type: bind
+        source: "."
+        target: "/app"
+    depends_on:
+      - db
+
+  db:
+    container_name: db
+    build:
+      dockerfile: ./docker/db/Dockerfile
     ports:
       - 5432:5432
     volumes:
-      - db_data:/var/lib/postgresql/data
-      - ./db:/docker-entrypoint-initdb.d
+      - type: volume
+        source: db_data
+        target: /var/lib/postgresql/data
+      - type: bind
+        source: ./db
+        target: /docker-entrypoint-initdb.d
     restart: always
     environment:
       POSTGRES_PASSWORD: password

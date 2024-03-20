@@ -4,6 +4,7 @@
     "format": "biome check . --apply"
   },
   "dependencies": {
+    "@hono/zod-openapi": "^0.9.8",
     "@hono/zod-validator": "^0.2.0",
     "hono": "^4.1.2",
     "postgres": "^3.4.3",
