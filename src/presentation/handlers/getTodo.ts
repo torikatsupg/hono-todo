@@ -1,8 +1,8 @@
+import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
 import { findTodoById } from '../../repository/todo_repository'
 import type { AppOptions } from '../../type'
 import { notFound } from '../util/response'
 import { TodoSchema } from './const'
-import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
 
 const app = new OpenAPIHono<AppOptions>()
 

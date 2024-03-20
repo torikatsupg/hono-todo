@@ -1,4 +1,5 @@
 # hono-todo
+This is a todo app created by hono and bun.
 
 ## requirements
 - docker
@@ -14,7 +15,14 @@ To stop server:
 docker compose down
 ```
 
-open http://localhost:3000
-
 ## API Defenition
-To see [api endpoints](./docs/endpoints.md) document
+1. Start server with `docker compose up`
+2. Open `http://locaclhost:3000/doc` in browser
+
+## Structure
+- app
+    - hono server
+    - served localhost:3000
+- db
+    - postgresql
+    - served localhost:5432
