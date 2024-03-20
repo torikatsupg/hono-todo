@@ -72,6 +72,19 @@
 {}
 ```
 
+## PATCH /todo/:id/status
+**request body**
+```
+{
+    status: "todo" | "doing" | "done"
+}
+```
+
+**response body**
+```
+{}
+```
+
 ## DELETE /todo/:id
 
 **request body**
