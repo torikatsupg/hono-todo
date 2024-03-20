@@ -44,7 +44,17 @@ app.openapi(route, async (c) => {
   const id = await createTodo(sql, data.title, data.description)
   const result = await findTodoById(sql, id)
 
-  return c.json(ResponseSchema.parse(result))
+  return c.json(
+    ResponseSchema.parse({
+      id: result?.id,
+      title: result?.title,
+      description: result?.description,
+      status: result?.status,
+      archived_at: result?.archived_at?.toISOString() ?? null,
+      updated_at: result?.updated_at.toISOString(),
+      created_at: result?.created_at.toISOString(),
+    }),
+  )
 })
 
 export default app

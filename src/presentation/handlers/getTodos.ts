@@ -27,7 +27,19 @@ app.openapi(route, async (c) => {
   const sql = c.get('sql')
   const result = await findAllTodoWithoutArchied(sql)
 
-  return c.json(ResponseSchema.parse(result))
+  return c.json(
+    ResponseSchema.parse(
+      result.map((v) => ({
+        id: v.id,
+        title: v.title,
+        description: v.description,
+        status: v.status,
+        archived_at: v.archived_at?.toISOString() ?? null,
+        updated_at: v.updated_at.toISOString(),
+        created_at: v.created_at.toISOString(),
+      })),
+    ),
+  )
 })
 
 export default app
