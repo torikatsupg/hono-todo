@@ -1,5 +1,5 @@
-import type { Sql } from 'postgres'
 import type { Hono } from 'hono'
+import type { Sql } from 'postgres'
 
 export type AppOptions = {
   Variables: {

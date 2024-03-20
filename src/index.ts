@@ -1,8 +1,8 @@
 import { Hono } from 'hono'
 import { logger } from 'hono/logger'
-import type { App } from './type'
 import { withCatchAllErrors, withTransaction } from './presentation/middlewares'
 import { setupTodoHandler } from './presentation/todo_handlers/todo_handler'
+import type { App } from './type'
 
 const app: App = new Hono()
 

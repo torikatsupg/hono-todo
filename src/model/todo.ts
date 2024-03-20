@@ -1,14 +1,16 @@
-type TodoStatus = "todo" | "doing" | "done";
+export const todoStatus = ['todo', 'doing', 'done'] as const
+
+export type TodoStatus = (typeof todoStatus)[number]
 
 export type Todo = {
-  id: string;
-  title: string;
-  description: string;
-  status: TodoStatus;
-  archived_at: null | Date;
-  created_at: Date;
-  updated_at: Date;
-};
+  id: string
+  title: string
+  description: string
+  status: TodoStatus
+  archived_at: null | Date
+  created_at: Date
+  updated_at: Date
+}
 
 export const newTodo = (
   id: string,
@@ -27,5 +29,5 @@ export const newTodo = (
     archived_at,
     created_at,
     updated_at,
-  };
-};
+  }
+}

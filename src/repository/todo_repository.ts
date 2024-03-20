@@ -1,5 +1,5 @@
 import type { Sql } from 'postgres'
-import { type Todo, newTodo } from '../model/todo'
+import { type Todo, type TodoStatus, newTodo } from '../model/todo'
 
 export const createTodo = async (
   sql: Sql,
@@ -22,6 +22,16 @@ export const createTodo = async (
 export const archiveTodo = async (sql: Sql, id: string): Promise<void> => {
   await sql`
     UPDATE api.todo SET archived_at = NOW() WHERE id = ${id}
+  `
+}
+
+export const updateTodoStatus = async (
+  sql: Sql,
+  id: string,
+  status: TodoStatus,
+): Promise<void> => {
+  await sql`
+    UPDATE api.todo SET status = ${status} WHERE id = ${id}
   `
 }
 
