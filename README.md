@@ -1,14 +1,15 @@
-To install dependencies:
-```sh
-bun install
-```
+# hono-todo
 
+## requirements
+- docker
+
+## Getting started
 To start server:
 ```sh
 docker compose up
 ```
 
-To start server:
+To stop server:
 ```sh
 docker compose down
 ```
