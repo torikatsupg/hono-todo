@@ -1,6 +1,6 @@
 \c todo
 
-CREATE FUNCTION api.refresh_updated_at_step1() RETURNS trigger AS
+CREATE FUNCTION refresh_updated_at_step1() RETURNS trigger AS
 $$
 BEGIN
   IF NEW.updated_at = OLD.updated_at THEN
@@ -10,7 +10,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
     
-CREATE FUNCTION api.refresh_updated_at_step2() RETURNS trigger AS
+CREATE FUNCTION refresh_updated_at_step2() RETURNS trigger AS
 $$
 BEGIN
   IF NEW.updated_at IS NULL THEN
@@ -20,7 +20,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE FUNCTION api.refresh_updated_at_step3() RETURNS trigger AS
+CREATE FUNCTION refresh_updated_at_step3() RETURNS trigger AS
 $$
 BEGIN
   IF NEW.updated_at IS NULL THEN

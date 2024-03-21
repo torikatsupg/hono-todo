@@ -1,9 +1,3 @@
 CREATE DATABASE todo; 
 
 \c todo
-
-CREATE SCHEMA api;
-
-CREATE ROLE api_user WITH LOGIN PASSWORD 'password';
-
-GRANT ALL PRIVILEGES ON SCHEMA api TO api_user;
