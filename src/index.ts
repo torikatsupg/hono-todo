@@ -10,6 +10,7 @@ import getTodos from './presentation/handlers/getTodos'
 import updateTodoStatus from './presentation/handlers/updateTodoStatus'
 import { withCatchAllErrors, withTransaction } from './presentation/middlewares'
 import type { AppOptions } from './type'
+import { cors } from 'hono/cors'
 
 const app = new OpenAPIHono<AppOptions>()
 
@@ -18,6 +19,7 @@ app.use(logger())
 app.use(withCatchAllErrors)
 app.use(withTransaction)
 app.use(prettyJSON())
+app.use('*', cors({ origin: '*' }))
 
 // handlers
 app.route('', getTodos)
