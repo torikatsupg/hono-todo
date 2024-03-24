@@ -1,6 +1,7 @@
 import postgres from 'postgres'
+import { drizzle } from 'drizzle-orm/postgres-js'
 
-const sql = postgres({
+const queryClient = postgres({
   host: 'db',
   port: 5432,
   database: 'todo',
@@ -8,4 +9,6 @@ const sql = postgres({
   password: 'password',
 })
 
-export default sql
+const db = drizzle(queryClient)
+
+export default db

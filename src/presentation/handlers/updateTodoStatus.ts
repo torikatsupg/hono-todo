@@ -37,16 +37,16 @@ const route = createRoute({
 })
 
 app.openapi(route, async (c) => {
-  const sql = c.get('sql')
+  const tx = c.get('tx')
   const params = c.req.valid('param')
   const data = c.req.valid('json')
 
-  const target = await findTodoById(sql, params.id)
+  const target = await findTodoById(tx, params.id)
   if (target === null) {
     return c.json(...notFound)
   }
 
-  await updateTodoStatus(sql, params.id, data.status)
+  await updateTodoStatus(tx, params.id, data.status)
 
   return c.json({}, 200)
 })

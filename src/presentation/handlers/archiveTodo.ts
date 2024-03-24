@@ -27,15 +27,15 @@ const route = createRoute({
 })
 
 app.openapi(route, async (c) => {
-  const sql = c.get('sql')
+  const tx = c.get('tx')
   const id = c.req.param('id')
 
-  const target = await findTodoById(sql, id)
+  const target = await findTodoById(tx, id)
   if (target === null) {
     return c.json(...notFound)
   }
 
-  await archiveTodo(sql, id)
+  await archiveTodo(tx, id)
   return c.json({}, 200)
 })
 

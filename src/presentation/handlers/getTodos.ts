@@ -24,22 +24,22 @@ const route = createRoute({
 })
 
 app.openapi(route, async (c) => {
-  const sql = c.get('sql')
-  const result = await findAllTodoWithoutArchied(sql)
+  const tx = c.get('tx')
+  const result = await findAllTodoWithoutArchied(tx)
 
-  return c.json(
-    ResponseSchema.parse(
-      result.map((v) => ({
-        id: v.id,
-        title: v.title,
-        description: v.description,
-        status: v.status,
-        archived_at: v.archived_at?.toISOString() ?? null,
-        updated_at: v.updated_at.toISOString(),
-        created_at: v.created_at.toISOString(),
-      })),
-    ),
+  const json = ResponseSchema.parse(
+    result.map((v) => ({
+      id: v.id,
+      title: v.title,
+      description: v.description,
+      status: v.status,
+      archived_at: v.archivedAt?.toISOString() ?? null,
+      updated_at: v.updatedAt.toISOString(),
+      created_at: v.createdAt.toISOString(),
+    })),
   )
+
+  return c.json(json)
 })
 
 export default app

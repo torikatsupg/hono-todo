@@ -15,9 +15,9 @@ const app = new OpenAPIHono<AppOptions>()
 
 // middlewares
 app.use(logger())
-app.use(prettyJSON())
 app.use(withCatchAllErrors)
 app.use(withTransaction)
+app.use(prettyJSON())
 
 // handlers
 app.route('', getTodos)

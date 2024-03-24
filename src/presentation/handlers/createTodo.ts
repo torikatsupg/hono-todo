@@ -39,10 +39,10 @@ const route = createRoute({
 
 app.openapi(route, async (c) => {
   const data = c.req.valid('json')
-  const sql = c.get('sql')
+  const tx = c.get('tx')
 
-  const id = await createTodo(sql, data.title, data.description)
-  const result = await findTodoById(sql, id)
+  const id = await createTodo(tx, data.title, data.description)
+  const result = await findTodoById(tx, id)
 
   return c.json(
     ResponseSchema.parse({
@@ -50,9 +50,9 @@ app.openapi(route, async (c) => {
       title: result?.title,
       description: result?.description,
       status: result?.status,
-      archived_at: result?.archived_at?.toISOString() ?? null,
-      updated_at: result?.updated_at.toISOString(),
-      created_at: result?.created_at.toISOString(),
+      archived_at: result?.archivedAt?.toISOString() ?? null,
+      updated_at: result?.updatedAt.toISOString(),
+      created_at: result?.createdAt.toISOString(),
     }),
   )
 })

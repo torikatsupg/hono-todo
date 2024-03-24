@@ -7,9 +7,9 @@ export type Todo = {
   title: string
   description: string
   status: TodoStatus
-  archived_at: null | Date
-  created_at: Date
-  updated_at: Date
+  archivedAt: null | Date
+  createdAt: Date
+  updatedAt: Date
 }
 
 export const newTodo = (
@@ -17,17 +17,17 @@ export const newTodo = (
   title: string,
   description: string,
   status: TodoStatus,
-  archived_at: null | Date,
-  created_at: Date,
-  updated_at: Date,
+  archivedAt: null | string,
+  createdAt: string,
+  updatedAt: string,
 ): Todo => {
   return {
     id: id,
     title,
     description,
     status,
-    archived_at,
-    created_at,
-    updated_at,
+    archivedAt: archivedAt ? new Date(archivedAt) : null,
+    createdAt: new Date(createdAt),
+    updatedAt: new Date(updatedAt),
   }
 }

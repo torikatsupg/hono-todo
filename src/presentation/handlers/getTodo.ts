@@ -34,10 +34,10 @@ const route = createRoute({
 })
 
 app.openapi(route, async (c) => {
-  const sql = c.get('sql')
+  const tx = c.get('tx')
   const params = c.req.valid('param')
 
-  const result = await findTodoById(sql, params.id)
+  const result = await findTodoById(tx, params.id)
   if (result === null) {
     return c.json(...notFound)
   }
@@ -48,9 +48,9 @@ app.openapi(route, async (c) => {
       title: result.title,
       description: result.description,
       status: result.status,
-      archived_at: result.archived_at?.toISOString() ?? null,
-      updated_at: result.updated_at.toISOString(),
-      created_at: result.created_at.toISOString(),
+      archived_at: result.archivedAt?.toISOString() ?? null,
+      updated_at: result.updatedAt.toISOString(),
+      created_at: result.createdAt.toISOString(),
     }),
   )
 })

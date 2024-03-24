@@ -1,71 +1,76 @@
 import type { Sql } from 'postgres'
 import { type Todo, type TodoStatus, newTodo } from '../model/todo'
+import { todo } from '../../drizzle/schema'
+import type { DefaultTransaction } from '../type'
+import { createInsertSchema } from 'drizzle-zod'
+import { eq, is, isNull } from 'drizzle-orm'
+import { date } from 'drizzle-orm/pg-core'
 
 export const createTodo = async (
-  sql: Sql,
+  tx: DefaultTransaction,
   title: string,
   description: string,
 ): Promise<string> => {
-  const status = 'todo'
-  const result = await sql`
-    INSERT INTO api.todo (title, description, status) 
-    VALUES (
-        ${title},
-        ${description},
-        ${status}
-    )
-    RETURNING id
-  `
+  todo
+  const result = await tx
+    .insert(todo)
+    .values({
+      title,
+      description,
+      status: 'todo',
+    })
+    .returning({ id: todo.id })
+
   return result[0].id
 }
 
-export const archiveTodo = async (sql: Sql, id: string): Promise<void> => {
-  await sql`
-    UPDATE api.todo SET archived_at = NOW() WHERE id = ${id}
-  `
+export const archiveTodo = async (
+  tx: DefaultTransaction,
+  id: string,
+): Promise<void> => {
+  await tx
+    .update(todo)
+    .set({ archivedAt: new Date().toISOString() })
+    .where(eq(todo.id, id))
 }
 
 export const updateTodoStatus = async (
-  sql: Sql,
+  tx: DefaultTransaction,
   id: string,
   status: TodoStatus,
 ): Promise<void> => {
-  await sql`
-    UPDATE api.todo SET status = ${status} WHERE id = ${id}
-  `
+  await tx.update(todo).set({ status }).where(eq(todo.id, id))
 }
 
-export const deleteTodo = async (sql: Sql, id: string): Promise<void> => {
-  await sql`
-    DELETE FROM api.todo WHERE id = ${id}
-  `
+export const deleteTodo = async (
+  tx: DefaultTransaction,
+  id: string,
+): Promise<void> => {
+  await tx.delete(todo).where(eq(todo.id, id))
 }
 
 export const findTodoById = async (
-  sql: Sql,
+  tx: DefaultTransaction,
   id: string,
 ): Promise<Todo | null> => {
-  const result = await sql`
-    SELECT * FROM api.todo WHERE id = ${id}
-  `
-  if (!result[0]) {
+  const result = await tx.select().from(todo).where(eq(todo.id, id))
+  const target = result[0]
+
+  if (target == null) {
     return null
   }
-  return restoreTodoFromRow(result[0])
+  return restoreTodoFromRow(target)
 }
 
-export const findAllTodoWithoutArchied = async (sql: Sql): Promise<Todo[]> => {
-  const result = await sql`
-    SELECT * FROM api.todo 
-    WHERE archived_at IS NULL
-  `
+export const findAllTodoWithoutArchied = async (
+  tx: DefaultTransaction,
+): Promise<Todo[]> => {
+  const result = await tx.select().from(todo).where(isNull(todo.archivedAt))
   return result.map(restoreTodoFromRow)
 }
 
-export const findAllTodo = async (sql: Sql): Promise<Todo[]> => {
-  const result = await sql`
-    SELECT * FROM api.todo
-  `
+export const findAllTodo = async (tx: DefaultTransaction): Promise<Todo[]> => {
+  const result = await tx.select().from(todo)
   return result.map(restoreTodoFromRow)
 }
 
@@ -76,8 +81,8 @@ const restoreTodoFromRow = (row: any): Todo => {
     row.title,
     row.description,
     row.status,
-    row.archived_at,
-    row.created_at,
-    row.updated_at,
+    row.archivedAt,
+    row.createdAt,
+    row.updatedAt,
   )
 }
